@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wanderlust — 日本旅遊探險</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Sans+TC:wght@300;400;500;700&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --navy: #0d1b2a;
+      --white: #fafaf8;
+      --gray-light: #f5f5f3;
+      --gray-mid: #d9d9d5;
+      --gray-dark: #8b8b85;
+      --gold: #c9a96e;
+      --text: #2c2c2c;
+      --red: #e63946;
+      --red-hover: #d62828;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans TC', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; line-height: 1.7; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 64px;
+      background: rgba(13, 27, 42, 0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201, 169, 110, 0.1);
+    }
+    .nav-logo { font-family: 'Shippori Mincho', serif; font-size: 1.3rem; color: var(--gold); letter-spacing: 4px; text-decoration: none; font-weight: 500; transition: opacity 0.3s; }
+    .nav-logo:hover { opacity: 0.8; }
+    .nav-links { display: flex; gap: 50px; list-style: none; }
+    .nav-links a { color: rgba(250, 250, 248, 0.7); text-decoration: none; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      position: relative; width: 100%; height: 700px; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-top: 64px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 1; animation: fadeInOut 24s ease-in-out infinite;
+    }
+    .hero-bg.bg-1 { background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1920&q=80'); animation-delay: 0s; }
+    .hero-bg.bg-2 { background-image: url('https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=1920&q=80'); animation-delay: 8s; opacity: 0; }
+    .hero-bg.bg-3 { background-image: url('https://images.unsplash.com/photo-1540959375944-7049f642e9a0?w=1920&q=80'); animation-delay: 16s; opacity: 0; }
+    @keyframes fadeInOut {
+      0% { opacity: 1; transform: scale(1); }
+      33.33% { opacity: 1; transform: scale(1.05); }
+      44% { opacity: 0; transform: scale(1.08); }
+      66.67% { opacity: 0; }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(13, 27, 42, 0.4) 0%, rgba(13, 27, 42, 0.75) 100%); }
+    .hero-content { position: relative; z-index: 2; text-align: center; max-width: 700px; padding: 0 5%; }
+    .hero-title { font-family: 'Shippori Mincho', serif; font-size: clamp(2.5rem, 5vw, 4rem); color: #fff; font-weight: 500; line-height: 1.4; letter-spacing: 2px; margin-bottom: 24px; opacity: 0; animation: fadeUp 1s ease 0.5s forwards; }
+    .hero-subtitle { font-size: clamp(0.9rem, 2vw, 1.1rem); color: rgba(255, 255, 255, 0.85); margin-bottom: 48px; opacity: 0; animation: fadeUp 1s ease 0.7s forwards; font-weight: 300; }
+    .hero-ctas { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; opacity: 0; animation: fadeUp 1s ease 0.9s forwards; }
+    .cta-btn { padding: 14px 40px; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; border: none; cursor: pointer; transition: all 0.3s ease; font-weight: 500; text-decoration: none; display: inline-block; }
+    .cta-btn-primary { background: var(--red); color: white; }
+    .cta-btn-primary:hover { background: var(--red-hover); transform: translateY(-2px); }
+    .cta-btn-secondary { background: transparent; color: white; border: 2px solid white; }
+    .cta-btn-secondary:hover { background: white; color: var(--navy); transform: translateY(-2px); }
+    .hero-scroll { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 12px; opacity: 0; animation: fadeUp 1s ease 1.1s forwards; }
+    .hero-scroll span { font-size: 0.6rem; letter-spacing: 3px; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), transparent); animation: scrollPulse 2s ease infinite; }
+    @keyframes scrollPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* MAP SECTION */
+    .map-section { background: var(--white); padding: 120px 5%; position: relative; }
+    .map-container { max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 80px; }
+    .section-label { font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .section-title { font-family: 'Shippori Mincho', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--text); margin-bottom: 12px; font-weight: 500; letter-spacing: 1px; }
+    .section-desc { font-size: 0.95rem; color: var(--gray-dark); max-width: 500px; margin: 0 auto; }
+    .map-wrapper { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: center; }
+    .map-svg-container { position: relative; width: 100%; aspect-ratio: 1; min-height: 500px; }
+    #japan-map { width: 100%; height: 100%; max-width: 500px; }
+    .city-marker { cursor: pointer; transition: all 0.3s ease; }
+    .city-marker circle { fill: var(--gold); stroke: var(--white); stroke-width: 2; transition: all 0.3s ease; }
+    .city-marker:hover circle { r: 12px; fill: var(--red); }
+    .city-marker text { pointer-events: none; font-size: 11px; font-weight: 500; fill: var(--text); text-anchor: middle; }
+    .city-info-panel { background: white; border: 1px solid var(--gray-light); border-radius: 8px; overflow: hidden; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); max-height: 600px; display: flex; flex-direction: column; }
+    .city-info-img { width: 100%; height: 200px; object-fit: cover; background: var(--gray-light); }
+    .city-info-content { padding: 32px; flex: 1; display: flex; flex-direction: column; }
+    .city-info-title { font-family: 'Shippori Mincho', serif; font-size: 1.6rem; color: var(--text); margin-bottom: 12px; font-weight: 500; }
+    .city-info-desc { font-size: 0.9rem; color: var(--gray-dark); line-height: 1.8; margin-bottom: 24px; flex: 1; }
+    .city-info-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .info-btn { padding: 10px 16px; border: 1px solid var(--gray-mid); background: white; color: var(--text); cursor: pointer; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s ease; border-radius: 4px; }
+    .info-btn:hover { background: var(--gray-light); border-color: var(--text); }
+    .info-btn.primary { background: var(--red); color: white; border-color: var(--red); }
+    .info-btn.primary:hover { background: var(--red-hover); border-color: var(--red-hover); }
+
+    /* NEWS SECTION */
+    .news-section { background: var(--gray-light); padding: 120px 5%; position: relative; }
+    .news-container { max-width: 1200px; margin: 0 auto; }
+    .news-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; }
+    .news-title-group .section-label { display: inline-block; }
+    .news-title-group .section-title { text-align: left; margin-top: 12px; }
+    .news-controls { display: flex; align-items: center; gap: 20px; }
+    .carousel-arrow { width: 50px; height: 50px; border: 1px solid var(--text); background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text); transition: all 0.3s ease; border-radius: 4px; }
+    .carousel-arrow:hover { background: var(--text); color: white; }
+    .carousel-arrow.disabled { opacity: 0.3; cursor: not-allowed; }
+    .carousel-arrow.disabled:hover { background: white; color: var(--text); }
+    .news-swiper { overflow: visible; }
+    .news-card { background: white; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); transition: all 0.3s ease; display: flex; flex-direction: column; height: 100%; }
+    .news-card:hover { transform: translateY(-8px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15); }
+    .news-card-img { width: 100%; height: 220px; object-fit: cover; background: var(--gray-light); }
+    .news-card-content { padding: 24px; display: flex; flex-direction: column; flex: 1; }
+    .news-card-date { font-size: 0.75rem; color: var(--gray-dark); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+    .news-card-title { font-family: 'Shippori Mincho', serif; font-size: 1.2rem; color: var(--text); line-height: 1.6; margin-bottom: 12px; font-weight: 500; min-height: 3em; }
+    .news-card-excerpt { font-size: 0.85rem; color: var(--gray-dark); line-height: 1.7; margin-bottom: 20px; flex: 1; }
+    .news-card-link { font-size: 0.8rem; color: var(--red); text-decoration: none; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; transition: color 0.3s; }
+    .news-card-link:hover { color: var(--red-hover); text-decoration: underline; }
+    .swiper-pagination { display: flex; justify-content: center; gap: 8px; margin-top: 32px; }
+    .swiper-pagination-bullet { width: 10px; height: 10px; border-radius: 50%; background: var(--gray-mid); cursor: pointer; transition: all 0.3s; }
+    .swiper-pagination-bullet-active { background: var(--text); width: 28px; border-radius: 5px; }
+
+    /* FOOTER */
+    footer { background: var(--navy); color: rgba(250, 250, 248, 0.7); padding: 80px 5%; text-align: center; font-size: 0.85rem; letter-spacing: 1px; }
+    footer a { color: var(--gold); text-decoration: none; transition: opacity 0.3s; }
+    footer a:hover { opacity: 0.8; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .map-wrapper { grid-template-columns: 1fr; gap: 40px; }
+      .news-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .news-controls { align-self: flex-end; }
+    }
+    @media (max-width: 768px) {
+      .hero { height: 500px; }
+      .hero-ctas { flex-direction: column; width: 100%; }
+      .cta-btn { width: 100%; }
+      .map-section { padding: 80px 5%; }
+      .news-section { padding: 80px 5%; }
+      .carousel-arrow { width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Wanderlust</a>
+    <ul class="nav-links">
+      <li><a href="#map">探險</a></li>
+      <li><a href="#news">新聞</a></li>
+      <li><a href="#about">關於</a></li>
+      <li><a href="#contact">聯絡</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="hero">
+    <div class="hero-bg bg-1"></div>
+    <div class="hero-bg bg-2"></div>
+    <div class="hero-bg bg-3"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">探險日本</h1>
+      <p class="hero-subtitle">發現隱藏的寶石，感受真實的文化</p>
+      <div class="hero-ctas">
+        <button class="cta-btn cta-btn-primary" onclick="document.getElementById('map').scrollIntoView({behavior: 'smooth'})">
+          立即開始探索
+        </button>
+        <button class="cta-btn cta-btn-secondary" onclick="document.getElementById('map').scrollIntoView({behavior: 'smooth'})">
+          ↓ 往下探索
+        </button>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>向下滾動</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE MAP SECTION -->
+  <section class="map-section" id="map">
+    <div class="map-container">
+      <div class="section-header">
+        <div class="section-label">互動地圖</div>
+        <h2 class="section-title">探索日本城市</h2>
+        <p class="section-desc">點擊地圖上的城市標記，發現每個目的地的獨特魅力</p>
+      </div>
+
+      <div class="map-wrapper">
+        <div class="map-svg-container">
+          <svg id="japan-map" viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="mapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#e8f4f8;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#d0e8f2;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <rect width="400" height="600" fill="url(#mapGradient)" />
+            <g class="city-marker" data-city="tokyo" onclick="showCityInfo('tokyo')">
+              <circle cx="350" cy="180" r="8" />
+              <text x="350" y="210">東京</text>
+            </g>
+            <g class="city-marker" data-city="kyoto" onclick="showCityInfo('kyoto')">
+              <circle cx="280" cy="230" r="8" />
+              <text x="280" y="260">京都</text>
+            </g>
+            <g class="city-marker" data-city="osaka" onclick="showCityInfo('osaka')">
+              <circle cx="300" cy="250" r="8" />
+              <text x="300" y="280">大阪</text>
+            </g>
+            <g class="city-marker" data-city="hiroshima" onclick="showCityInfo('hiroshima')">
+              <circle cx="220" cy="310" r="8" />
+              <text x="220" y="340">廣島</text>
+            </g>
+            <g class="city-marker" data-city="nagasaki" onclick="showCityInfo('nagasaki')">
+              <circle cx="150" cy="420" r="8" />
+              <text x="150" y="450">長崎</text>
+            </g>
+            <g class="city-marker" data-city="fukuoka" onclick="showCityInfo('fukuoka')">
+              <circle cx="180" cy="380" r="8" />
+              <text x="180" y="410">福岡</text>
+            </g>
+            <g class="city-marker" data-city="sapporo" onclick="showCityInfo('sapporo')">
+              <circle cx="320" cy="80" r="8" />
+              <text x="320" y="110">札幌</text>
+            </g>
+          </svg>
+        </div>
+
+        <div class="city-info-panel" id="cityInfoPanel">
+          <img src="https://images.unsplash.com/photo-1540959375944-7049f642e9a0?w=400&h=200&fit=crop" alt="城市" class="city-info-img" id="cityImg">
+          <div class="city-info-content">
+            <h3 class="city-info-title" id="cityTitle">東京</h3>
+            <p class="city-info-desc" id="cityDesc">
+              日本的首都和最大城市，以其摩天大樓、古老寺廟、購物中心和傳統文化而聞名。
+            </p>
+            <div class="city-info-actions">
+              <button class="info-btn primary">景點</button>
+              <button class="info-btn">美食</button>
+              <button class="info-btn">住宿</button>
+              <button class="info-btn">文章</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWS CAROUSEL SECTION -->
+  <section class="news-section" id="news">
+    <div class="news-container">
+      <div class="news-header">
+        <div class="news-title-group">
+          <div class="section-label">最新資訊</div>
+          <h2 class="section-title">旅遊新聞</h2>
+        </div>
+        <div class="news-controls">
+          <button class="carousel-arrow" id="prevBtn" onclick="swiper.slidePrev()">‹</button>
+          <button class="carousel-arrow" id="nextBtn" onclick="swiper.slideNext()">›</button>
+        </div>
+      </div>
+
+      <div class="swiper news-swiper" id="newsSwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <article class="news-card">
+              <img src="https://images.unsplash.com/photo-1522383507537-decceb4e80b9?w=400&h=220&fit=crop" alt="新聞" class="news-card-img">
+              <div class="news-card-content">
+                <div class="news-card-date">2026 年 4 月 12 日</div>
+                <h3 class="news-card-title">春天樱花季节 — 完美时刻</h3>
+                <p class="news-card-excerpt">今年春天，日本最美的樱花将在整个岛屿绽放。我们列出了不容错过的最佳地点和旅遊建議。</p>
+                <a href="#" class="news-card-link">閱讀更多 →</a>
+              </div>
+            </article>
+          </div>
+
+          <div class="swiper-slide">
+            <article class="news-card">
+              <img src="https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=400&h=220&fit=crop" alt="新聞" class="news-card-img">
+              <div class="news-card-content">
+                <div class="news-card-date">2026 年 4 月 10 日</div>
+                <h3 class="news-card-title">京都新廟宇開放參觀</h3>
+                <p class="news-card-excerpt">古老的西本願寺最近完成了為期 5 年的修復工程，現已向遊客開放參觀。</p>
+                <a href="#" class="news-card-link">閱讀更多 →</a>
+              </div>
+            </article>
+          </div>
+
+          <div class="swiper-slide">
+            <article class="news-card">
+              <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=220&fit=crop" alt="新聞" class="news-card-img">
+              <div class="news-card-content">
+                <div class="news-card-date">2026 年 4 月 8 日</div>
+                <h3 class="news-card-title">東京新美食街開業</h3>
+                <p class="news-card-excerpt">銀座全新美食街集聚了 30 家日本和國際餐廳，為美食家提供頂級體驗。</p>
+                <a href="#" class="news-card-link">閱讀更多 →</a>
+              </div>
+            </article>
+          </div>
+
+          <div class="swiper-slide">
+            <article class="news-card">
+              <img src="https://images.unsplash.com/photo-1540959375944-7049f642e9a0?w=400&h=220&fit=crop" alt="新聞" class="news-card-img">
+              <div class="news-card-content">
+                <div class="news-card-date">2026 年 4 月 5 日</div>
+                <h3 class="news-card-title">大阪城周邊新景點</h3>
+                <p class="news-card-excerpt">大阪城東側新建了日本最大的互動博物館，深入探索日本歷史和文化。</p>
+                <a href="#" class="news-card-link">閱讀更多 →</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Wanderlust. 所有權利保留。</p>
+    <p style="margin-top: 16px;">
+      <a href="#">隱私政策</a> | <a href="#">條款</a> | <a href="#">聯絡我們</a>
+    </p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script>
+    // ═══════════════════════════════════════
+    // CITY DATA
+    // ═══════════════════════════════════════
+    const cityData = {
+      tokyo: {
+        title: '東京',
+        desc: '日本的首都和最大城市，以其摩天大樓、古老寺廟、購物中心和傳統文化而聞名。',
+        img: 'https://images.unsplash.com/photo-1540959375944-7049f642e9a0?w=400&h=200&fit=crop'
+      },
+      kyoto: {
+        title: '京都',
+        desc: '日本傳統文化的心臟，擁有超過 2000 座寺廟和神社，以及精美的花園和傳統藝術。',
+        img: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=400&h=200&fit=crop'
+      },
+      osaka: {
+        title: '大阪',
+        desc: '日本的美食之都，以其活力四射的街道、現代建築和世界級的餐飲場景而著稱。',
+        img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=200&fit=crop'
+      },
+      hiroshima: {
+        title: '廣島',
+        desc: '一座充滿歷史和希望的城市，以其和平紀念公園和地域美食而聞名於世。',
+        img: 'https://images.unsplash.com/photo-1522383507537-decceb4e80b9?w=400&h=200&fit=crop'
+      },
+      nagasaki: {
+        title: '長崎',
+        desc: '海邊城市，以其壯麗的夜景、歐洲影響和獨特的融合文化而著名。',
+        img: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=400&h=200&fit=crop'
+      },
+      fukuoka: {
+        title: '福岡',
+        desc: '九州最大的城市，以其美食街、溫泉和充滿活力的夜生活而聞名。',
+        img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=200&fit=crop'
+      },
+      sapporo: {
+        title: '札幌',
+        desc: '北海道的首府，擁有美麗的雪景、溫泉和美食，是冬季旅遊的完美目的地。',
+        img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop'
+      }
+    };
+
+    // 顯示城市信息
+    function showCityInfo(city) {
+      const data = cityData[city];
+      if (data) {
+        document.getElementById('cityImg').src = data.img;
+        document.getElementById('cityTitle').textContent = data.title;
+        document.getElementById('cityDesc').textContent = data.desc;
+      }
+    }
+
+    // ═══════════════════════════════════════
+    // SWIPER CAROUSEL
+    // ═══════════════════════════════════════
+    let swiper;
+    document.addEventListener('DOMContentLoaded', function() {
+      swiper = new Swiper('#newsSwiper', {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+          type: 'bullets',
+        },
+        navigation: {
+          nextEl: '#nextBtn',
+          prevEl: '#prevBtn',
+        },
+        breakpoints: {
+          320: { slidesPerView: 1, spaceBetween: 20 },
+          768: { slidesPerView: 2, spaceBetween: 25 },
+          1024: { slidesPerView: 3, spaceBetween: 30 },
+        },
+        loop: true,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+      });
+    });
+  </script>
+</body>
+</html>

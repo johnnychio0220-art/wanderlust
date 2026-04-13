@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wanderlust — 選擇你的版本</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      text-align: center;
+      color: white;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+      opacity: 0.95;
+    }
+    .versions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: left;
+      color: #333;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+    .card h2 {
+      color: #667eea;
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+    }
+    .card p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+    .features {
+      list-style: none;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+    .features li {
+      padding: 0.5rem 0;
+      color: #666;
+    }
+    .features li::before {
+      content: "✓ ";
+      color: #667eea;
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: #667eea;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.3s, transform 0.2s;
+      font-weight: 600;
+      width: 100%;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn:hover {
+      background: #5568d3;
+      transform: scale(1.02);
+    }
+    .btn-alt {
+      background: #764ba2;
+    }
+    .btn-alt:hover {
+      background: #653a8a;
+    }
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🗾 Wanderlust</h1>
+    <p>選擇你喜歡的版本</p>
+    
+    <div class="versions">
+      <!-- 官方版本 -->
+      <div class="card">
+        <h2>📍 官方版本</h2>
+        <p>互動地圖 + 新聞 Carousel，充滿視覺動感</p>
+        <ul class="features">
+          <li>背景圖自動輪換</li>
+          <li>互動日本地圖</li>
+          <li>新聞輪播走馬燈</li>
+          <li>7 個城市標記</li>
+        </ul>
+        <a href="official.html" class="btn">進入官方版</a>
+      </div>
+
+      <!-- 我的版本 -->
+      <div class="card">
+        <h2>🎨 我的版本</h2>
+        <p>極簡優雅，深色系統，強調內容</p>
+        <ul class="features">
+          <li>深色調設計</li>
+          <li>4 個體驗卡片</li>
+          <li>4 個城市網格</li>
+          <li>數據統計展示</li>
+        </ul>
+        <a href="my-version.html" class="btn btn-alt">進入我的版</a>
+      </div>
+    </div>
+
+    <p style="margin-top: 3rem; font-size: 0.9rem;">
+      Made with ❤️ for exploring Japan
+    </p>
+  </div>
+</body>
+</html>
